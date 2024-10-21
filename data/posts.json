@@ -6,7 +6,7 @@
     "postDate": "2023-10-10",
     "category": 1,
     "body": "This is my first blog post. I'm excited to share more in the future!",
-    "featureImage": "https://www.google.com/imgres?q=blog&imgurl=https%3A%2F%2Fwww.technmarketing.com%2Fwp-content%2Fuploads%2F2013%2F12%2Fbbc-blogs.jpg&imgrefurl=https%3A%2F%2Fwww.technmarketing.com%2Fcellphone%2Fso-you-finally-started-a-blog-awesome-here-are-some-basicimportant-tips-no-one-told-you%2F&docid=SrX4uY74TZ5waM&tbnid=D3WEednxYYcyeM&vet=12ahUKEwiim4LatqCJAxVXj4kEHYTvNQEQM3oECEgQAA..i&w=420&h=241&hcb=2&ved=2ahUKEwiim4LatqCJAxVXj4kEHYTvNQEQM3oECEgQAA"
+    "featureImage": "https://www.technmarketing.com/wp-content/uploads/2013/12/bbc-blogs.jpg"
   },
   {
     "id": 2,
@@ -15,6 +15,6 @@
     "postDate": "2023-10-12",
     "category": 2,
     "body": "Web development is an exciting journey, and I'm eager to learn more.",
-    "featureImage": "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.coplus.co.uk%2Fnews%2Fcoplus-seek-full-stack-web-developer&psig=AOvVaw22BEzriyoJHl9d1wHYaG89&ust=1729632899130000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCIDBmei2oIkDFQAAAAAdAAAAABAd"
+    "featureImage": "https://www.coplus.co.uk/assets/full-stack-web-developer.jpg"
   }
 ]
