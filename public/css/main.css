@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f9fa;
+}
+
+h2 {
+    color: #007bff;
+}
+
+.navbar {
+    background-color: #343a40;
+}
+
+.navbar-brand {
+    color: white !important;
+}
+
+.navbar-nav > li > a {
+    color: white !important;
+}
