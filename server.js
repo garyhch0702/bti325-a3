@@ -20,9 +20,9 @@ const PORT = process.env.PORT || 8080;
 
 // Cloudinary configuration
 cloudinary.config({
-  cloud_name: 'Your Cloudinary Cloud Name',
-  api_key: 'Your Cloudinary API Key',
-  api_secret: 'Your Cloudinary API Secret',
+  cloud_name: 'do8toktki',
+  api_key: '442976841246212',
+  api_secret: 'h3Ivzcjr-NkacclHRFO3zULtOH0',
   secure: true
 });
 
