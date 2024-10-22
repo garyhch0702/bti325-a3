@@ -72,6 +72,18 @@ function getPostsByMinDate(minDateStr) {
   });
 }
 
+// Function to get published posts
+function getPublishedPosts() {
+  return new Promise((resolve, reject) => {
+    const publishedPosts = posts.filter(post => post.published === true);
+    if (publishedPosts.length > 0) {
+      resolve(publishedPosts);
+    } else {
+      reject('No published posts found');
+    }
+  });
+}
+
 // Function to get a post by ID
 function getPostById(id) {
   return new Promise((resolve, reject) => {
@@ -84,11 +96,24 @@ function getPostById(id) {
   });
 }
 
+// Function to get all categories
+function getCategories() {
+  return new Promise((resolve, reject) => {
+    if (categories.length > 0) {
+      resolve(categories);
+    } else {
+      reject('No categories found');
+    }
+  });
+}
+
 module.exports = {
   initialize,
   addPost,
   getAllPosts,
   getPostsByCategory,
   getPostsByMinDate,
-  getPostById
+  getPublishedPosts,
+  getPostById,
+  getCategories
 };

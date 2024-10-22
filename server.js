@@ -6,7 +6,7 @@
 *
 * Name: Chenghao Hu Student ID: 149773228 Date: 2024/10/25
 *
-* Online (Vercel) URL: [https://vercel.com/garyhus-projects/bti325-a3/D6DpQaMRqiZrekaYKkuD8g4QoCFF]
+* Online (Vercel) URL: [Insert Vercel URL]
 ********************************************************************************/
 
 const express = require('express');
@@ -20,9 +20,9 @@ const PORT = process.env.PORT || 8080;
 
 // Cloudinary configuration
 cloudinary.config({
-  cloud_name: 'do8toktki',
-  api_key: '442976841246212',
-  api_secret: 'h3Ivzcjr-NkacclHRFO3zULtOH0',
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
   secure: true
 });
 
@@ -48,6 +48,10 @@ app.get('/posts/add', (req, res) => {
 
 // POST route to handle adding new blog posts
 app.post('/posts/add', upload.single('featureImage'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("No file uploaded.");
+  }
+
   let streamUpload = (req) => {
     return new Promise((resolve, reject) => {
       let stream = cloudinary.uploader.upload_stream((error, result) => {
@@ -70,10 +74,26 @@ app.post('/posts/add', upload.single('featureImage'), (req, res) => {
     req.body.featureImage = uploaded.url;
     blogService.addPost(req.body).then(() => {
       res.redirect('/posts');
+    }).catch((err) => {
+      res.status(500).send("Error adding post: " + err);
     });
   }).catch((err) => {
-    res.status(500).send("Unable to upload image or add post.");
+    res.status(500).send("Cloudinary upload failed: " + err);
   });
+});
+
+// Serve the blog posts that are published
+app.get('/blog', (req, res) => {
+  blogService.getPublishedPosts()
+    .then(posts => res.json(posts))
+    .catch(err => res.status(404).json({ message: err }));
+});
+
+// Serve all categories
+app.get('/categories', (req, res) => {
+  blogService.getCategories()
+    .then(categories => res.json(categories))
+    .catch(err => res.status(404).json({ message: err }));
 });
 
 // Serve all posts or filter by category or minDate
