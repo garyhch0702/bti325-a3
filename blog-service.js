@@ -1,5 +1,6 @@
 const fs = require('fs');
-const path = require('path'); 
+const path = require('path');
+
 let posts = [];
 let categories = [];
 
@@ -44,28 +45,6 @@ function getAllPosts() {
   });
 }
 
-function getPostsByCategory(category) {
-  return new Promise((resolve, reject) => {
-    const filteredPosts = posts.filter(post => post.category == category);
-    if (filteredPosts.length > 0) {
-      resolve(filteredPosts);
-    } else {
-      reject('No posts found for this category');
-    }
-  });
-}
-
-function getPostsByMinDate(minDateStr) {
-  return new Promise((resolve, reject) => {
-    const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
-    if (filteredPosts.length > 0) {
-      resolve(filteredPosts);
-    } else {
-      reject('No posts found after the given date');
-    }
-  });
-}
-
 function getPublishedPosts() {
   return new Promise((resolve, reject) => {
     const publishedPosts = posts.filter(post => post.published === true);
@@ -77,13 +56,35 @@ function getPublishedPosts() {
   });
 }
 
+function getPostsByCategory(category) {
+  return new Promise((resolve, reject) => {
+    const filteredPosts = posts.filter(post => post.category == category);
+    if (filteredPosts.length > 0) {
+      resolve(filteredPosts);
+    } else {
+      reject("No posts found for category: " + category);
+    }
+  });
+}
+
+function getPostsByMinDate(minDate) {
+  return new Promise((resolve, reject) => {
+    const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDate));
+    if (filteredPosts.length > 0) {
+      resolve(filteredPosts);
+    } else {
+      reject("No posts found after date: " + minDate);
+    }
+  });
+}
+
 function getPostById(id) {
   return new Promise((resolve, reject) => {
     const post = posts.find(post => post.id == id);
     if (post) {
       resolve(post);
     } else {
-      reject('No post found with this ID');
+      reject("Post not found for ID: " + id);
     }
   });
 }
@@ -102,9 +103,9 @@ module.exports = {
   initialize,
   addPost,
   getAllPosts,
+  getPublishedPosts,
   getPostsByCategory,
   getPostsByMinDate,
-  getPublishedPosts,
   getPostById,
-  getCategories
+  getCategories // Export getCategories
 };

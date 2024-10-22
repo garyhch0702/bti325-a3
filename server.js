@@ -18,7 +18,6 @@ const streamifier = require('streamifier');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -26,7 +25,8 @@ cloudinary.config({
   secure: true
 });
 
-const upload = multer(); 
+const upload = multer();
+
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
@@ -43,37 +43,41 @@ app.get('/posts/add', (req, res) => {
 
 app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   if (!req.file) {
-    return res.status(400).send("No file uploaded.");
-  }
-
-  let streamUpload = (req) => {
-    return new Promise((resolve, reject) => {
-      let stream = cloudinary.uploader.upload_stream((error, result) => {
-        if (result) {
-          resolve(result);
-        } else {
-          reject(error);
-        }
-      });
-      streamifier.createReadStream(req.file.buffer).pipe(stream);
-    });
-  };
-
-  async function upload(req) {
-    let result = await streamUpload(req);
-    return result;
-  }
-
-  upload(req).then((uploaded) => {
-    req.body.featureImage = uploaded.url;
+    req.body.featureImage = null;
     blogService.addPost(req.body).then(() => {
       res.redirect('/posts');
     }).catch((err) => {
       res.status(500).send("Error adding post: " + err);
     });
-  }).catch((err) => {
-    res.status(500).send("Cloudinary upload failed: " + err);
-  });
+  } else {
+    let streamUpload = (req) => {
+      return new Promise((resolve, reject) => {
+        let stream = cloudinary.uploader.upload_stream((error, result) => {
+          if (result) {
+            resolve(result);
+          } else {
+            reject(error);
+          }
+        });
+        streamifier.createReadStream(req.file.buffer).pipe(stream);
+      });
+    };
+
+    async function upload(req) {
+      return await streamUpload(req);
+    }
+
+    upload(req).then((uploaded) => {
+      req.body.featureImage = uploaded.url;
+      blogService.addPost(req.body).then(() => {
+        res.redirect('/posts');
+      }).catch((err) => {
+        res.status(500).send("Error adding post: " + err);
+      });
+    }).catch((err) => {
+      res.status(500).send("Cloudinary upload failed: " + err);
+    });
+  }
 });
 
 app.get('/blog', (req, res) => {
