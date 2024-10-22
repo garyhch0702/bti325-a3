@@ -6,7 +6,7 @@
 *
 * Name: Chenghao Hu Student ID: 149773228 Date: 2024/10/25
 *
-* Online (Vercel) URL: [Insert Vercel URL]
+* Online (Vercel) URL: [bti325-a3-bvtkcumkc-garyhus-projects.vercel.app]
 ********************************************************************************/
 
 const express = require('express');
@@ -18,7 +18,7 @@ const streamifier = require('streamifier');
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Cloudinary configuration
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -26,27 +26,21 @@ cloudinary.config({
   secure: true
 });
 
-const upload = multer(); // no { storage: storage } since we are not using disk storage
-
-// Serve static files from 'public' folder
+const upload = multer(); 
 app.use(express.static('public'));
 
-// Redirect root to /about
 app.get('/', (req, res) => {
   res.redirect('/about');
 });
 
-// Serve the about.html file
 app.get('/about', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'about.html'));
 });
 
-// Serve the addPost.html file
 app.get('/posts/add', (req, res) => {
   res.sendFile(path.join(__dirname, 'views', 'addPost.html'));
 });
 
-// POST route to handle adding new blog posts
 app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   if (!req.file) {
     return res.status(400).send("No file uploaded.");
@@ -82,21 +76,18 @@ app.post('/posts/add', upload.single('featureImage'), (req, res) => {
   });
 });
 
-// Serve the blog posts that are published
 app.get('/blog', (req, res) => {
   blogService.getPublishedPosts()
     .then(posts => res.json(posts))
     .catch(err => res.status(404).json({ message: err }));
 });
 
-// Serve all categories
 app.get('/categories', (req, res) => {
   blogService.getCategories()
     .then(categories => res.json(categories))
     .catch(err => res.status(404).json({ message: err }));
 });
 
-// Serve all posts or filter by category or minDate
 app.get('/posts', (req, res) => {
   if (req.query.category) {
     blogService.getPostsByCategory(req.query.category)
@@ -113,19 +104,16 @@ app.get('/posts', (req, res) => {
   }
 });
 
-// Get a specific post by ID
 app.get('/posts/:id', (req, res) => {
   blogService.getPostById(req.params.id)
     .then((post) => res.json(post))
     .catch((err) => res.status(404).json({ message: err }));
 });
 
-// 404 Page Not Found route
 app.use((req, res) => {
   res.status(404).send("Page Not Found");
 });
 
-// Initialize blog-service and start the server
 blogService.initialize()
   .then(() => {
     app.listen(PORT, () => {

@@ -1,10 +1,8 @@
 const fs = require('fs');
 
-// Global arrays to hold posts and categories
 let posts = [];
 let categories = [];
 
-// Initialize function to read the JSON files
 function initialize() {
   return new Promise((resolve, reject) => {
     fs.readFile('./data/posts.json', 'utf8', (err, data) => {
@@ -26,7 +24,6 @@ function initialize() {
   });
 }
 
-// Function to add a new post
 function addPost(postData) {
   return new Promise((resolve, reject) => {
     postData.published = postData.published ? true : false;
@@ -37,7 +34,6 @@ function addPost(postData) {
   });
 }
 
-// Function to get all posts
 function getAllPosts() {
   return new Promise((resolve, reject) => {
     if (posts.length > 0) {
@@ -48,7 +44,6 @@ function getAllPosts() {
   });
 }
 
-// Function to get posts by category
 function getPostsByCategory(category) {
   return new Promise((resolve, reject) => {
     const filteredPosts = posts.filter(post => post.category == category);
@@ -60,7 +55,6 @@ function getPostsByCategory(category) {
   });
 }
 
-// Function to get posts by minDate
 function getPostsByMinDate(minDateStr) {
   return new Promise((resolve, reject) => {
     const filteredPosts = posts.filter(post => new Date(post.postDate) >= new Date(minDateStr));
@@ -72,7 +66,6 @@ function getPostsByMinDate(minDateStr) {
   });
 }
 
-// Function to get published posts
 function getPublishedPosts() {
   return new Promise((resolve, reject) => {
     const publishedPosts = posts.filter(post => post.published === true);
@@ -84,7 +77,6 @@ function getPublishedPosts() {
   });
 }
 
-// Function to get a post by ID
 function getPostById(id) {
   return new Promise((resolve, reject) => {
     const post = posts.find(post => post.id == id);
@@ -96,7 +88,6 @@ function getPostById(id) {
   });
 }
 
-// Function to get all categories
 function getCategories() {
   return new Promise((resolve, reject) => {
     if (categories.length > 0) {
